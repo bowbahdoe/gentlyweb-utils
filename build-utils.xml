@@ -1,0 +1,70 @@
+<project default="createUtilsJar" basedir=".">
+
+  <property name="projectName" value="gentlyWEB" />
+  <property name="buildDir" value="./build" />
+  <property name="srcDir" value="./src" />
+
+  <target name="cleanBuild">
+    <delete dir="${buildDir}" />
+  </target>
+
+  <target name="init">
+    <mkdir dir="${buildDir}" />
+    <mkdir dir="${srcDir}" />
+    <tstamp>
+      <format property="TODAY" pattern="dd/MMM/yy" />
+    </tstamp>
+
+    <available file="f:/java/jars"
+               type="dir"
+               property="commonJarsDir"
+               value="f:/java/jars" />
+
+    <fail unless="commonJarsDir">Unable to find common jars!  Check paths in target "init".</fail>
+
+    <!--
+      Define where the common jar files are.  It needs to be done here otherwise "commonJarsDir" would
+      not be allocated a value.
+    -->
+    <path id="commonJars">
+      <fileset defaultexcludes="yes" dir="${commonJarsDir}">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+
+  </target>
+
+   <target name="compileUtils" depends="cleanBuild,init">
+    <javac srcdir="${srcDir}/utils"
+           destdir="${buildDir}"
+           debug="on"
+           source="1.4"
+           deprecation="on"
+           excludes="**/cvs/**">
+      <classpath refid="commonJars" />
+    </javac>
+
+  </target>
+
+  <target name="createUtilsJar" depends="compileUtils">
+
+    <property name="utilsTitle" value="utils - General purpose utilities" />
+    <property name="utilsVersion" value="1.1" />
+    <property name="utilsPackage" value="com/gentlyweb/utils" />
+
+    <jar destfile="${projectName}-utils-${utilsVersion}.jar" 
+         basedir="${buildDir}">
+      <manifest>
+        <attribute name="Built-By" value="${projectName}.com" />
+
+        <section name="${utilsPackage}">
+          <attribute name="Implementation-Title" value="${utilsTitle}" />
+          <attribute name="Implementation-Vendor" value="${projectName}.com" />
+          <attribute name="Implementation-Version" value="${utilsVersion} (${TODAY})" />
+        </section>
+
+      </manifest>
+    </jar>
+  </target>
+
+</project>
