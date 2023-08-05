@@ -17,16 +17,9 @@ package com.gentlyweb.utils;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.StringTokenizer;
-
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Attribute;
+import java.util.List;
 
 //import com.gentlyweb.xml.JDOMUtils;
 //import com.gentlyweb.xml.JDOMXmlOutputter;
@@ -212,7 +205,7 @@ import org.jdom.Attribute;
  * <h4><a name="#7.1">Format</a></h4>
  * <p>
  * When {@link #getAsJDOMElement()} is called it will return a JDOM Element
- * in the form given below (conversely, the constructor {@link #GeneralComparator(Element)}
+ * in the form given below (conversely, the constructor {@code #GeneralComparator(Element)}
  * expects the passed in JDOM element to have the same format):
  * <pre>
  *   &#lt;comparator class="[[NAME OF CLASS THAT IS BEING COMPARED]]">
@@ -316,8 +309,7 @@ import org.jdom.Attribute;
  * </p>
  */
 public class GeneralComparator implements Comparator, 
-                                          Serializable//,
-                                          //JDOMXmlOutputter
+                                          Serializable
 {
 
     public class XMLConstants
@@ -352,7 +344,6 @@ public class GeneralComparator implements Comparator,
      * element.
      *
      * @param root The root JDOM element.
-     * @throws JDOMException If the format is incorrect.
      * @throws ChainException If we can't load the class that we need.
      * @throws IllegalArgumentException If the field is invalid.
      */

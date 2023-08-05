@@ -26,7 +26,7 @@ import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import javax.activation.DataSource;
+import jakarta.activation.DataSource;
 
 /**
  * A Class for handling a gzipped file as a DataSource.

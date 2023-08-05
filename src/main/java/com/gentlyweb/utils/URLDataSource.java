@@ -19,18 +19,20 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import javax.activation.DataSource;
+import jakarta.activation.DataSource;
+import java.net.URL;
+import java.net.URLConnection;
 
-public class HTMLDataSource implements DataSource
+public class URLDataSource implements DataSource
 {
 
-    private String html;         
+    private URL url = null;         
+    private String contentType = "text/plain";
 
-    public HTMLDataSource (String html) 
+    public URLDataSource (URL url) 
     {
 
-	this.html = html;
+	this.url = url;
     
     }
 
@@ -38,14 +40,21 @@ public class HTMLDataSource implements DataSource
                                        throws IOException 
     {
 
-	if (this.html == null) 
+	if (this.url == null) 
 	{
 
-	    throw new IOException ("No HTML provided");
+	    throw new IOException ("No URL provided");
 
 	}
 	
-	return new BufferedInputStream (new ByteArrayInputStream (this.html.getBytes()));
+	URLConnection urlC = url.openConnection ();
+	urlC.setDoInput (true);
+	
+	urlC.connect ();
+	this.contentType = urlC.getContentType ();
+
+	// Get the input stream...
+	return new BufferedInputStream (urlC.getInputStream ());
     
     }
 
@@ -60,14 +69,14 @@ public class HTMLDataSource implements DataSource
     public String getContentType() 
     {
 
-	return "text/html; charset=\"iso-8859-1\"";
+	return this.contentType;
         
     }
     
     public String getName() 
     {
     
-        return "HTML DataSource for sending only";
+        return "URL DataSource for sending only";
         
     }
 
